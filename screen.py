@@ -9,9 +9,9 @@ try:
     from PyQt5 import sip
 except ImportError:
     import sip
-
-url = 'https://interact.reklama145.ru/kiosk'
-url = 'http://127.0.0.1:8000/kiosk'
+base_url = 'https://interact-museumofads.ru'
+url = f'{base_url}/kiosk'
+# url = 'http://127.0.0.1:8000/kiosk'
 
 class BrowserApp(QWidget):
     def __init__(self):
@@ -21,7 +21,7 @@ class BrowserApp(QWidget):
         self.browser.setUrl(QUrl(url))
         self.browser.setGeometry(0, 0, self.width(), self.height())  # Set the geometry of the browser view
         
-        icon_url = "https://interact.reklama145.ru/get-img/static/resources/icons/home.png"
+        icon_url = f"{base_url}/get-img/static/resources/icons/home.png"
         response = requests.get(icon_url, verify=False)
         pixmap = QPixmap()
         pixmap.loadFromData(response.content)
@@ -47,12 +47,10 @@ class BrowserApp(QWidget):
     def on_url_changed(self, new_url):
         # Get the path of the URL
         path = new_url.path()
-        print(path)
         # Check if the path contains 'poster/'
         if 'poster/' in path:
             # If so, replace 'poster/' with 'poster-kiosk/' and set the new path
             new_path = path.replace('poster/', 'poster-kiosk/')
-            print(new_path)
             new_url.setPath(new_path)
             # Set the updated URL to navigate to it
             self.browser.setUrl(new_url)
